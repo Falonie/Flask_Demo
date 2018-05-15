@@ -1,17 +1,31 @@
 {% extends "base.html" %}
+
 {% block title %}注册{% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename="css/login.css") }}">
+    <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/resetemail.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/signup.js') }}"></script>
 {% endblock %}
+
 {% block main %}
     <h3 class="page-title">注册</h3>
     <form action="" method="post">
         <div class="form-container">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="用户名" name="username">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="手机号码" name="telephone">
+                    <span class="input-group-btn"><button id="sms_captcha_btn" class="btn btn-default">发送验证码</button></span>
+                </div>
             </div>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="手机号码" name="telephone">
+                <input type="text" class="form-control" name="sms_captcha" placeholder="短信验证码">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" name="username">
             </div>
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="密码" name="password">
@@ -19,9 +33,26 @@
             <div class="form-group">
                 <input type="password" class="form-control" placeholder="重复密码" name="repeat_password">
             </div>
+{#            <div class="form-group">#}
+{#                <div class="input-group">#}
+{#                    <input type="email" class="form-control" name="email" placeholder="邮箱">#}
+{#                    <span class="input-group-addon" id="captcha-btn" style="cursor: pointer;">获取验证码</span>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div class="form-group">#}
+{#                <div class="input-group">#}
+{#                    <input type="text" class="form-control" name="captcha" placeholder="验证码">#}
+{#                </div>#}
+{#            </div>#}
             <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block">注册</button>
+                <button type="submit" class="btn btn-primary btn-block" id="submit-btn">注册</button>
+{#                <button class="btn btn-primary btn-block" id="submit-btn">注册</button>#}
             </div>
+        {% if message %}
+            <p style="text-align: center;" class="text-danger">{{ message }}</p>
+        {% endif %}
+        <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
+{#        <p style="display: none;color: red;" id="message-p"></p>#}
         </div>
     </form>
 {% endblock %}

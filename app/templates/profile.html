@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/profile.css') }}">
+{% endblock %}
+
+{% block main %}
+{#<h3 style="padding-top: 40px">Profile</h3>#}
+{#<p>Hello {{ user.username }}</p>#}
+{% endblock %}
+
+{% block profile %}
+    <div class="container">
+        <div class="page-header">
+            <img class="avatar" src="{{ url_for('static',filename='images/profile.png') }}" alt="">
+            <div class="profile-header">
+{#                <img class="avatar" src="{{ url_for('static',filename='images/profile.png') }}" alt="">#}
+                <h3>Profile</h3>
+                <p>Hello {{ user.username }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

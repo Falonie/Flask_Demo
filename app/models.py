@@ -12,6 +12,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(100), nullable=False)
     questions = db.relationship('Question', backref='users')
     comments = db.relationship('Comment', backref='users')
+    email = db.Column(db.String(50), unique=True)
 
     @property
     def password(self):
@@ -23,6 +24,12 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def __init__(self, username, password, telephone, email=None):
+        self.username = username
+        self.password = password
+        self.telephone = telephone
+        self.email = email
 
     def __repr__(self):
         return '<User {}>'.format(self.username)
@@ -64,7 +71,6 @@ class Comment(db.Model):
 
     def __repr__(self):
         return '<Comment {}>'.format(self.content)
-
 
 # print(User.query().filter().all())
 # with app.app_context():

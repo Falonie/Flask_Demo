@@ -1,12 +1,16 @@
 {% extends "base.html" %}
+
 {% block title %}登录{% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename="css/login.css") }}">
 {% endblock %}
+
 {% block main %}
     <h3 class="page-title">登录</h3>
     <form action="" method="post">
         <div class="form-container">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="手机号码" name="telephone">
             </div>

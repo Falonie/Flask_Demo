@@ -12,10 +12,13 @@ body{
 .main{
     /*background: ghostwhite;*/
     /*background: whitesmoke;*/
+    border: 1px solid #ddd;
     background: white;
     width: 730px;
     overflow: hidden;
     margin: 0 auto;
+    /*margin-left: 4px;*/
+    /*margin-right: 2cm;*/
     padding: 10px;
 }
 

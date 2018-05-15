@@ -3,12 +3,14 @@
 {% block title %}
 
 {% endblock %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename="css/articles.css") }}">
 {% endblock %}
+
 {% block main %}
     {% if question %}
-        <h3 class="page-title">{{ question.title }}</h3>
+        <h3 class="page-title" style="padding-top: 40px">{{ question.title }}</h3>
         <p class="question-info">
             <span>{{ question.users.username }}</span>
             <span>{{ question.create_time }}</span>
@@ -18,6 +20,7 @@
         <hr>
         <h4>评论</h4>
         <form action="{{ url_for('main.comments') }}" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="评论" name="comment_content">
                 <input type="hidden" name="question_id" value="{{ question.id }}">
@@ -30,7 +33,8 @@
                     <li>
                         <div class="user-info">
                             <img src="{{ url_for('static',filename='images/profile.png') }}" alt="" class="avatar">
-                            <span class="username">{{ question.users.username }}</span>
+{#                            <span class="username">{{ question.users.username }}</span>#}
+                            <span class="username">{{ comment.users.username }}</span>
                             <span class="comment_time">{{ comment.time }}</span>
                         </div>
                         <p class="comment_content">{{ comment.content }}</p>

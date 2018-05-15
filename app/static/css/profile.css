@@ -1,0 +1,34 @@
+body{
+    background: white;
+}
+
+.container{
+    /*padding-top: 40px;*/
+    /*width: 800px;*/
+    /*padding-left: 20px;*/
+    /*margin-left: 15px;*/
+}
+
+.page-header{
+    padding-top: 40px;
+}
+
+.page-header{
+    margin: 20px 0 20px;
+}
+
+.profile-header{
+    /*margin-left: 20px;*/
+    /*margin: 0 auto;*/
+    margin-left: 260px;
+    /*min-height: 280px;*/
+    /*padding-bottom: 10px;*/
+    /*padding-top: 1px;*/
+    margin-top: 10px;
+}
+
+
+.avatar{
+    width: 200px;
+    height: 200px;
+}
