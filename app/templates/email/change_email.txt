@@ -1,0 +1,6 @@
+Dear {{ user.username }},
+
+To reset your password ,a captcha code has been sent to your mail address.
+{{ captcha_code }}
+
+Thanks.

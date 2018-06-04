@@ -1,46 +1,79 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros %}
 
 {% block title %}
-
 {% endblock %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static',filename="css/articles.css") }}">
+    <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/comment.js') }}"></script>
 {% endblock %}
 
 {% block main %}
-    {% if question %}
-        <h3 class="page-title" style="padding-top: 40px">{{ question.title }}</h3>
-        <p class="question-info">
-            <span>{{ question.users.username }}</span>
-            <span>{{ question.create_time }}</span>
-        </p>
-        <hr>
-        <p class="question-content">{{ question.content }}</p>
-        <hr>
-        <h4>评论</h4>
-        <form action="{{ url_for('main.comments') }}" method="post">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="评论" name="comment_content">
-                <input type="hidden" name="question_id" value="{{ question.id }}">
-            </div>
-            <div class="form-group" name="submit" style="text-align: right">
-                <button class="btn btn-primary">提交</button>
-            </div>
+    <div class="left-box">
+        {% if question %}
+            <h3 class="page-title">{{ question.title }}</h3>
+            <p class="question-info">
+                <span>{{ question.users.username }}</span>
+                <span>{{ question.create_time }}</span>
+            </p>
+            <hr>
+            <p class="question-content">{{ question.content }}</p>
+            {% if current_user == question.users %}
+                <a href="{{ url_for('.edit_article',article_id=question.id) }}" class="edit-article">编辑</a>
+                <form action="{{ url_for('main.delete_article') }}" method="post">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <input type="hidden" name="article_id" value="{{ question.id }}">
+                    <button class="btn-delete-article">删除</button>
+                </form>
+            {% endif %}
+            <hr>
+            <h4>评论</h4>
+            <form action="{{ url_for('main.comments') }}" method="post">
+{#            <form action="" method="post">#}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="评论" name="comment_content">
+                    <input type="hidden" name="question_id" value="{{ question.id }}">
+                </div>
+                <div class="form-group" name="submit" style="text-align: right">
+                    <button class="btn btn-primary" id="btn-submit-comment">提交</button>
+                </div>
+            </form>
             <ul class="comments">
-                {% for comment in question.comments %}
+                {% for comment in comments %}
                     <li>
                         <div class="user-info">
                             <img src="{{ url_for('static',filename='images/profile.png') }}" alt="" class="avatar">
 {#                            <span class="username">{{ question.users.username }}</span>#}
-                            <span class="username">{{ comment.users.username }}</span>
+                            <span class="username">
+                                <a href="{{ url_for('main.profile',user_name=comment.users.username) }}">{{ comment.users.username }}</a>
+                            </span>
                             <span class="comment_time">{{ comment.time }}</span>
                         </div>
-                        <p class="comment_content">{{ comment.content }}</p>
+                        <div class="comment-box">
+                            <div class="comment-info"><p class="comment_content">{{ comment.content }}</p></div>
+                            {% if comment.users == current_user %}
+                                <form action="{{ url_for('main.delete_comment') }}" method="post">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <div class="comment-delete">
+                                        <p class="comment-delete">
+                                            <button name="comment_id" value="{{ comment.id }}">删除</button>
+                                            <input type="hidden" name="question_id" value="{{ question.id }}">
+                                        </p>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </div>
                     </li>
                 {% endfor %}
             </ul>
-        </form>
-    {% endif %}
+            {% if pagination %}
+                <div class="pagination">
+                    {{ macros.pagination_widget(pagination,'main.articles',question_id=question.id) }}
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
 {% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+    修改邮箱
+{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/reset_email.css') }}">
+    <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/resetemail.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+{% endblock %}
+
+{% block profile %}
+    <div class="container">
+        <div class="page-header">
+            <h2>修改邮箱</h2>
+        </div>
+        <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-container">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="email" class="form-control" name="email" placeholder="邮箱">
+                        <span class="input-group-addon" id="captcha-btn" style="cursor: pointer;">获取验证码</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="captcha" placeholder="验证码">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <button class="btn btn-primary" id="submit-btn">提交</button>
+                    </div>
+                </div>
+            {% if message %}
+                <p style="text-align: center;" class="text-danger">{{ message }}</p>
+            {% endif %}
+            <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
+            </div>
+        </form>
+    </div>
+{% endblock %}

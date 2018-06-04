@@ -38,5 +38,25 @@ p.question-info{
 
 .comment_content{
     margin-left: 60px;
+    width: 560px;
 }
 
+.delete-comment{
+    /*overflow: hidden;*/
+    /*float: right;*/
+    /*text-align: left;*/
+    /*margin-left: 60px;*/
+}
+
+p.comment-delete{
+    /*float: left;*/
+    margin-left: 60px;
+}
+
+.edit-article{
+    text-align: right;
+}
+
+.btn-delete-article{
+    float: right;
+}

@@ -18,3 +18,15 @@
 #     # flash(message='{}'.format(form.errors))
 #     return render_template('register.html')
 
+# @auth.route('/resetemail/')
+# @login_required
+# def reset_email():
+#     form = ResetEmailForm(request.form)
+#     if form.validate():
+#         email = form.email.data
+#         g.user.email = email
+#         db.session.commit()
+#         return jsonify({"code": 200, "message": ""})
+#     print(form.errors)
+#     return render_template('reset_email.html')
+#

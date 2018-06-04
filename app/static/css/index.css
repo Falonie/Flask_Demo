@@ -1,7 +1,6 @@
 ul.question-list-group{
     list-style: none;
     padding-left: 0;
-    padding-top: 40px;
     /*width: 60%;*/
 }
 
@@ -22,6 +21,15 @@ ul.question-list-group li{
     /*overflow: hidden;*/
     /*padding: 15px 0;*/
 /*}*/
+
+.post-group{
+    /*border: 1px solid #ddd;*/
+    padding: 10px;
+}
+
+.pagination {
+    text-align: center;
+}
 
 .avatar-group{
     width: 38px;

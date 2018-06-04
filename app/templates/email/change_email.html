@@ -1,0 +1,5 @@
+<p>Dear {{ user.username }},</p>
+<p>You are changing your email address , a captcha code has been sent to your mail address.</p>
+<p>captcha code: {{ captcha_code }}</p>
+<p><a href="{{ url_for('main.index',token=token,_external=True) }}">click here</a></p>
+<p>Thanks.</p>

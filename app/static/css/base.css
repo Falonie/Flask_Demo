@@ -6,22 +6,30 @@
     /*color: cornflowerblue;*/
 /*}*/
 body{
-    background: gainsboro;
+    /*background: gainsboro;*/
     /*background: ghostwhite;*/
 }
 .main{
     /*background: ghostwhite;*/
     /*background: whitesmoke;*/
-    border: 1px solid #ddd;
-    background: white;
-    width: 730px;
+    /*border: 1px solid #ddd;*/
+    /*background: white;*/
+    /*width: 730px;*/
+    width: 990px;
     overflow: hidden;
     margin: 0 auto;
     /*margin-left: 4px;*/
     /*margin-right: 2cm;*/
     padding: 10px;
+    padding-top: 60px;
 }
 
+.left-box{
+    width: 730px;
+    float: left;
+    /*border: 1px solid #ddd;*/
+    /*padding: 10px;*/
+}
 .page-title{
     text-align: center;
 }

@@ -1,0 +1,15 @@
+body{
+    background: white;
+}
+.container{
+    width: 1170px;
+}
+.page-header{
+    margin: 40px 0 20px;
+    padding-bottom: 9px;
+    padding-top: 10px;
+}
+
+.form-group{
+    /*padding-left: 10px;*/
+}
