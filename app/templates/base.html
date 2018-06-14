@@ -25,11 +25,8 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#">
-                {#                <img class="logo" src="{{ url_for('static',filename='images/profile3.png') }}" alt="">#}
             </a>
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
@@ -49,9 +46,9 @@
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-{#                            <li><a href="{{ url_for('main.profile',user_name=g.user.username) }}">我的主页</a></li>#}
                             <li><a href="{{ url_for('main.profile',user_name=current_user.username) }}">我的主页</a></li>
-                            <li><a href="{{ url_for('auth.resetemail') }}">设置</a></li>
+                            <li><a href="{{ url_for('auth.change_email') }}">设置</a></li>
+                            <li><a href="{{ url_for('auth.change_telephone') }}">修改手机号</a></li>
                             <li><a href="{{ url_for('auth.changepassword') }}">修改密码</a></li>
                             <li><a href="{{ url_for('auth.logout') }}">退出</a></li>
                         </ul>
@@ -68,5 +65,6 @@
     {% block main %}{% endblock %}
 </div>
 {% block profile %}{% endblock %}
+{% block script %}{% endblock %}
 </body>
 </html>

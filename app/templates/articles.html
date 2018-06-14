@@ -20,13 +20,15 @@
             </p>
             <hr>
             <p class="question-content">{{ question.content }}</p>
-            {% if current_user == question.users %}
-                <a href="{{ url_for('.edit_article',article_id=question.id) }}" class="edit-article">编辑</a>
-                <form action="{{ url_for('main.delete_article') }}" method="post">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <input type="hidden" name="article_id" value="{{ question.id }}">
-                    <button class="btn-delete-article">删除</button>
-                </form>
+            {% if current_user == question.users or current_user.is_administrator() %}
+                <div class="edit-delete-article">
+                    <a href="{{ url_for('.edit_article', article_id=question.id) }}" class="edit-article"><span class="label label-primary">编辑</span></a>
+                    <a href="{{ url_for('main.delete_article', article_id=question.id) }}">
+                        <span class="label label-danger">删除</span>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="article_id" value="{{ question.id }}">
+                    </a>
+                </div>
             {% endif %}
             <hr>
             <h4>评论</h4>
@@ -54,16 +56,15 @@
                         </div>
                         <div class="comment-box">
                             <div class="comment-info"><p class="comment_content">{{ comment.content }}</p></div>
-                            {% if comment.users == current_user %}
-                                <form action="{{ url_for('main.delete_comment') }}" method="post">
-                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            {% if comment.users == current_user or current_user.can(Permission.ADMINISTER)%}
+{#                                <form action="{{ url_for('main.delete_comment') }}" method="post">#}
+{#                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">#}
                                     <div class="comment-delete">
-                                        <p class="comment-delete">
-                                            <button name="comment_id" value="{{ comment.id }}">删除</button>
-                                            <input type="hidden" name="question_id" value="{{ question.id }}">
-                                        </p>
+{#                                        <button class="label label-danger" name="comment_id" value="{{ comment.id }}">删除</button>#}
+                                        <input type="hidden" name="question_id" value="{{ question.id }}">
+                                        <a href="{{ url_for('main.delete_comment',question_id=question.id,comment_id=comment.id) }}"><span class="label label-danger">删除</span></a>
                                     </div>
-                                </form>
+{#                                </form>#}
                             {% endif %}
                         </div>
                     </li>

@@ -1,0 +1,21 @@
+body{
+    background: white;
+}
+
+.container{
+    width: 1170px;
+}
+
+.page-header{
+    padding-left: 50px;
+    /*margin-left: 50px;*/
+}
+
+.form-group{
+    width: 300px;
+    /*padding-left: 60px;*/
+}
+
+.form-container{
+    padding-left: 50px;
+}

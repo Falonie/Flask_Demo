@@ -17,8 +17,11 @@
         <form action="" method="post">
             <div class="form-container">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+{#                <div class="form-group">#}
+{#                    <input type="text" class="form-control" placeholder="手机号码" name="telephone">#}
+{#                </div>#}
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="手机号码" name="telephone">
+                    <input type="text" class="form-control" placeholder="手机号码/邮箱" name="account">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" placeholder="密码" name="password">
@@ -32,6 +35,7 @@
                 </div>
                 <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
             </div>
+            <span style="display: none" id="return-to-span">{{ return_to }}</span>
         </form>
     </div>
 {% endblock %}

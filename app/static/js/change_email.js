@@ -1,6 +1,7 @@
 $(function () {
-    $("#captcha-btn").click(function (event) {
+    $('#captcha_btn').click(function (event) {
         event.preventDefault();
+        var self = $(this);
         var email = $("input[name='email']").val();
         if (!email) {
             zlalert.alertInfoToast('请输入邮箱');
@@ -13,20 +14,24 @@ $(function () {
                 'email': email
             },
             'success': function (data) {
+                // console.log(data);
                 if (data['code'] == 200) {
-                    // zlalert.alertSuccessToast('邮件发送成功！');
-                    // window.location = '/';
-                    // console.log();
+                    // zlalert.alertSuccessToast('短信发送成功！');
+                    self.attr("disabled", 'disabled');
+                    var timeCount = 60;
+                    var timer = setInterval(function () {
+                        timeCount--;
+                        // var str = '{0}{1}'.format(timeCount, '后再发送');
+                        self.text(timeCount);
+                        if (timeCount <= 0) {
+                            self.removeAttr('disabled');
+                            clearInterval(timer);
+                            self.text('发送验证码');
+                        }
+                    }, 1000);
                 } else {
-                    zlalert.alertInfo(data['message']);
-                    // var message = data['message'];
-                    // $('#message').html(message);
-                    // $('#message').show();
+                    zlalert.alertInfoToast(data['message']);
                 }
-            },
-            'fail': function (error) {
-                // zlalert.alertNetworkError();
-                console.log(error)
             }
         });
     });
@@ -41,17 +46,17 @@ $(function () {
         var email = email_input.val();
         var captcha = captcha_input.val();
         zlajax.post({
-            'url': '/resetemail/',
+            'url': '/change_email/',
             'data': {
                 'email': email,
                 'captcha': captcha
             },
             'success': function (data) {
                 if (data['code'] == 200) {
-                    // window.location = '/';
-                    window.location = '/resetemail/';
+                    // window.location = '/resetemail/';
                     $('#message').html(data['message']);
                     $('#message').show();
+                    window.location = '/';
                     console.log(data)
                 } else {
                     var message = data['message'];

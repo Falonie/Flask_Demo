@@ -16,7 +16,6 @@
         <div class="page-header">
             <img class="avatar" src="{{ url_for('static',filename='images/profile.png') }}" alt="">
             <div class="profile-header">
-{#                <img class="avatar" src="{{ url_for('static',filename='images/profile.png') }}" alt="">#}
                 <h3>Profile</h3>
                 <p>Hello {{ user.username }}</p>
                 {% if current_user == user %}

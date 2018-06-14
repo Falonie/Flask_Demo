@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename="css/unconfirmed.css") }}">
+    <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="unconfirmed-box">
+        <h3>Hello {{ current_user.username }}</h3>
+        <p>it seems you have not confirmed yet.</p>
+        <p>Please click following link to resend confirmation</p>
+        <p><a href="{{ url_for('auth.resend_confirmation') }}">Resend confirmation email</a></p>
+    </div>
+{% endblock %}

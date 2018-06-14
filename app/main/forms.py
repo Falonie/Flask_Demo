@@ -1,11 +1,13 @@
-from wtforms import Form, StringField, PasswordField, SubmitField, IntegerField, TextAreaField
-from wtforms.validators import Length, EqualTo, NumberRange, ValidationError, InputRequired
+from wtforms import Form, StringField, SubmitField, IntegerField, TextAreaField
+from wtforms.validators import Length, NumberRange, ValidationError, InputRequired
+from flask_pagedown.fields import PageDownField
 from ..models import User
 
 
 class PostForm(Form):
     title = StringField('title', validators=[InputRequired()])
-    content = TextAreaField('content', validators=[InputRequired()])
+    # content = TextAreaField('content', validators=[InputRequired()])
+    content = PageDownField('content', validators=[InputRequired()])
     submit = SubmitField('submit')
 
 
@@ -26,4 +28,9 @@ class EditProfileForm(Form):
 
 class EditArticleForm(Form):
     title = StringField('title', validators=[InputRequired()])
-    content = TextAreaField('content', validators=[InputRequired()])
+    # content = TextAreaField('content', validators=[InputRequired()])
+    content = PageDownField('content', validators=[InputRequired()])
+
+
+class DeleteArticleForm(Form):
+    article_id = IntegerField('article_id', validators=[InputRequired()])

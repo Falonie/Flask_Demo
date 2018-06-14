@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}注册{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename="css/login.css") }}">
+    <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
+{% endblock %}
+
+{% block main %}
+    <h3 class="page-title">注册</h3>
+    <form action="" method="post">
+        <div class="form-container">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="用户名" name="username">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="密码" name="password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="重复密码" name="repeat_password">
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="邮箱">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block" id="submit-btn">注册</button>
+            </div>
+        {% if message %}
+            <p style="text-align: center;" class="text-danger">{{ message }}</p>
+        {% endif %}
+        <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
+{#        <p style="display: none;color: red;" id="message-p"></p>#}
+        </div>
+    </form>
+{% endblock %}

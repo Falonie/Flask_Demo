@@ -2,6 +2,21 @@ body{
     background: white;
 }
 
-/*.posts{*/
-    /*padding-top: 60px;*/
-/*}*/
+
+.left-box{
+    /*padding-top: 20px;*/
+    margin-top: 20px;
+}
+
+ul.post-list-group{
+    list-style: none;
+}
+
+ul.post-list-group li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.time-info{
+    text-align: right;
+}

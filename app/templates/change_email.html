@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/reset_email.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/change_email.css') }}">
     <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/resetemail.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/change_email.js') }}"></script>
 {% endblock %}
 
 {% block main %}
@@ -24,23 +24,19 @@
                 <div class="form-group">
                     <div class="input-group">
                         <input type="email" class="form-control" name="email" placeholder="邮箱">
-                        <span class="input-group-addon" id="captcha-btn" style="cursor: pointer;">获取验证码</span>
+                        <span class="input-group-btn"><button id="captcha_btn" class="btn btn-default">发送验证码</button></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="captcha" placeholder="验证码">
-                    </div>
+                    <input type="text" class="form-control" name="captcha" placeholder="验证码">
                 </div>
                 <div class="form-group">
-                    <div class="input-group">
-                        <button class="btn btn-primary" id="submit-btn">提交</button>
-                    </div>
+                    <button class="btn btn-primary btn-block" id="submit-btn">提交</button>
                 </div>
-            {% if message %}
-                <p style="text-align: center;" class="text-danger">{{ message }}</p>
-            {% endif %}
-            <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
+                {% if message %}
+                    <p style="text-align: center;" class="text-danger">{{ message }}</p>
+                {% endif %}
+                <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
             </div>
         </form>
     </div>

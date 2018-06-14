@@ -1,62 +1,70 @@
-p.question-info{
+p.question-info {
     text-align: center;
     margin-top: 20px;
 }
 
-/*div.submit{*/
-    /*text-align: right;*/
-/*}*/
-.comments{
+.comments {
     padding-left: 0;
 }
-.comments li{
+
+.comments li {
     list-style: none;
     border-bottom: 1px solid #eee;
     padding-top: 10px;
 }
 
-.avatar{
+.avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
 }
 
-.user-info{
+.user-info {
     font-size: 16px;
     color: #9b9b9b;
     line-height: 40px;
 }
 
-.user-info .username{
+.user-info .username {
     margin-left: 15px;
 }
 
-.user-info .comment_time{
+.user-info .comment_time {
     float: right;
     /*text-align: right;*/
 }
 
-.comment_content{
+.comment_content {
     margin-left: 60px;
     width: 560px;
 }
 
-.delete-comment{
+.delete-comment {
     /*overflow: hidden;*/
     /*float: right;*/
     /*text-align: left;*/
     /*margin-left: 60px;*/
 }
 
-p.comment-delete{
-    /*float: left;*/
-    margin-left: 60px;
-}
-
-.edit-article{
+.comment-delete {
     text-align: right;
+    padding-bottom: 10px;
 }
 
-.btn-delete-article{
+.edit-article {
+    text-align: right;
+    /*font-size: 100%;*/
+}
+
+.btn-delete-article {
     float: right;
+}
+
+.label{
+    text-align: right;
+    white-space: nowrap;
+}
+
+.edit-delete-article{
+    text-align: right;
 }

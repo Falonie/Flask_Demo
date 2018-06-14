@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename="css/after_sent_email.css") }}">
+{% endblock %}
+
+{% block main %}
+    <div class="email-box">
+        <h4>邮件已发送</h4>
+        <h4>前往查收</h4>
+    </div>
+{% endblock %}

@@ -8,22 +8,26 @@
 {% endblock %}
 
 {% block main %}
-    <h3 class="page-title">发布</h3>
-    <form action="" method="post">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <div class="form-container">
-            <div class="form-group">
-                <input type="text" placeholder="标题" name="title" class="form-control">
+    <div class="left-box">
+        <h3 class="page-title">发布</h3>
+        <form action="" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-container">
+                <div class="form-group">
+                    <input type="text" placeholder="标题" name="title" class="form-control">
+                </div>
+                <div class="form-group-content">
+                    <textarea name="content" id="content" rows="12" placeholder="内容" class="form-control"></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary">提交</button>
+                </div>
             </div>
-            <div class="form-group-content">
-                <textarea name="content" id="content" rows="12" placeholder="内容" class="form-control"></textarea>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-primary">提交</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 {% endblock %}
 
-{#{% block main %}#}
-{#{% endblock %}#}
+{% block script %}
+    {{ super() }}
+    {{ pagedown.include_pagedown() }}
+{% endblock %}

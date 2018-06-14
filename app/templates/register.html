@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename="css/login.css") }}">
     <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
     <script src="{{ url_for('static',filename='js/zlajax.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/resetemail.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/send_smscaptcha.js') }}"></script>
     <script src="{{ url_for('static',filename='js/signup.js') }}"></script>
 {% endblock %}
 
@@ -48,11 +48,15 @@
                 <button type="submit" class="btn btn-primary btn-block" id="submit-btn">注册</button>
 {#                <button class="btn btn-primary btn-block" id="submit-btn">注册</button>#}
             </div>
+            <div class="form-group">
+                <a href="{{ url_for('auth.register_by_email') }}" class="signup-link">用邮箱注册</a>
+            </div>
         {% if message %}
             <p style="text-align: center;" class="text-danger">{{ message }}</p>
         {% endif %}
         <p style="display: none;text-align: center;" id="message" class="text-danger"></p>
-{#        <p style="display: none;color: red;" id="message-p"></p>#}
+{#        <p style="display: none;color: red;text-align: center" id="message-p"></p>#}
+        <span style="display: none" id="return-to-span">{{ return_to }}</span>
         </div>
     </form>
 {% endblock %}
