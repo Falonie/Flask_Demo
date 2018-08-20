@@ -10,6 +10,7 @@ from .forms import RegistrationForm, RegistrationByEmailForm, LoginForm, ChangeE
 from ..email import send_mail_thread, send_mail_thread2
 from .redis_config import redis_instance
 from . import zlcache
+from tasks import send_mail, send_mail2
 
 
 @auth.before_app_request
@@ -39,7 +40,7 @@ class RegistrationView(views.MethodView):
 
     def post(self):
         form = RegistrationForm(request.form)
-        if current_user.can(Permission.WRITE_ARTICLES) and form.validate():
+        if form.validate():
             username = form.username.data
             telephone = form.telephone.data
             password = form.password.data
@@ -111,6 +112,7 @@ def register_by_email():
         token = user.generate_confirmation_token()
         send_mail_thread2(user.email, 'comfirmation', 'email/confirm', user=user, token=token)
         return render_template('after_sent_email.html')
+        # return redirect(url_for('.login'))
         # return jsonify({"code": 200, "message": "邮件已发送"})
     return render_template('registration_email.html')
 
@@ -174,12 +176,16 @@ def email_captcha():
     # mail.send(message)
     # send_mail_thread(to=email, subject='captcha code', body='验证码：{}'.format(captcha))
     token = current_user.generate_reset_token()
+    # send_mail2(subject='captcha code', to=email, template='email/change_email', user=current_user, token=token,body=captcha,
+    #            captcha_code=captcha)
+    # send_mail(to=email, subject='captcha code', template='email/change_email', user=current_user, token=token,
+    # captcha_code=captcha)
     send_mail_thread2(to=email, subject='captcha code', template='email/change_email', user=current_user, token=token,
                       captcha_code=captcha)
-    print('*' * 30, 'generate email captcha: {}'.format(captcha), '*' * 30)
+    print('*' * 30, f'generate email captcha: {captcha}', '*' * 30)
     zlcache.set(email, captcha)
     redis_instance.set(email, captcha)
-    print('*' * 30, 'redis captcha {}'.format(redis_instance.get(email).decode('utf-8')), '*' * 30)
+    print('*' * 30, f'redis captcha {redis_instance.get(email).decode("utf-8")}', '*' * 30)
     return jsonify({"code": 200, "message": ""})
 
 
@@ -194,7 +200,7 @@ def change_telephone():
             db.session.commit()
             # return redirect(url_for('main.index'))
             return jsonify({"code": 200, "message": "手机号修改成功"})
-        print('Error: {}'.format(form.errors))
+        print(f'Error: {form.errors}')
         message = form.errors.popitem()[1][0]
         return jsonify({"code": 401, "message": message})
     return render_template('auth/change_telephone.html')
