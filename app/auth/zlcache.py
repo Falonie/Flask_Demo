@@ -1,5 +1,5 @@
 import memcache
-from pymemcache.client.base import Client
+# from pymemcache.client.base import Client
 
 # cache=Client(('127.0.0.1',11211))
 cache = memcache.Client(['127.0.0.1:11211'], debug=True)

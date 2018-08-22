@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import current_app
+from flask import current_app, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin, AnonymousUserMixin
@@ -151,6 +151,16 @@ class Question(db.Model):
 
     # def __repr__(self):
     #     return '<Question {}>'.format(self.title)
+
+    def to_json(self):
+        json_post = {
+            'url': url_for('api.get_post', id=self.id, _external=True),
+            'title': self.title,
+            'create_time': self.create_time,
+            'update_time': self.update_time,
+            'user': self.user_id
+        }
+        return json_post
 
 
 class Comment(db.Model):
