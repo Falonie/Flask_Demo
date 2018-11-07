@@ -14,7 +14,7 @@ def index():
     print(current_app.config['FLASKY_POSTS_PER_PAGE'])
     pagination = Question.query.order_by(Question.create_time.desc()). \
         paginate(page=page, per_page=current_app.config['FLASKY_POSTS_PER_PAGE'], error_out=False)
-    print('pagination {}'.format(pagination))
+    print(f'pagination {pagination}')
     posts = pagination.items
     return render_template('index.html', questions=posts, pagination=pagination)
     # return render_template('index.html', questions=posts)
@@ -23,7 +23,7 @@ def index():
 @main.route('/question/', methods=['GET', 'POST'])
 @login_required
 def question():
-    form = PostForm(request.form)
+    form = PostForm()
     if form.validate():
         post = Question(title=form.title.data, content=form.content.data)
         # user_id = session.get('user_id')
@@ -66,7 +66,7 @@ def articles(question_id):
 @main.route('/comments/', methods=['GET', 'POST'])
 @login_required
 def comments():
-    form = CommentForm(request.form)
+    form = CommentForm()
     if form.validate():
         # comment_content = request.form.get('comment_content')
         comment_content = form.comment_content.data
@@ -149,7 +149,7 @@ def post(author, post_id):
 
 @main.route('/edit_post/<article_id>', methods=['GET', 'POST'])
 def edit_article(article_id):
-    form = EditArticleForm(request.form)
+    form = EditArticleForm()
     article = Question.query.filter(Question.id == article_id).first()
     if form.validate():
         article.title = form.title.data

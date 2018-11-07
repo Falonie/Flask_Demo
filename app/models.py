@@ -3,6 +3,7 @@ from flask import current_app, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin, AnonymousUserMixin
+from app.exceptions import ValidationError
 from . import db, login_manager
 
 
@@ -117,8 +118,19 @@ class User(UserMixin, db.Model):
         # db.session.add(self)
         db.session.commit()
 
+    def to_json(self):
+        json_user = {
+            'username': self.username,
+            'telephone': self.telephone,
+            'email': self.email,
+            # 'posts': self.questions.count(),
+            'last_seen': self.last_seen
+
+        }
+        return json_user
+
     def __repr__(self):
-        return '<User {}>'.format(self.username)
+        return f'<User {self.username}>'
 
 
 @login_manager.user_loader
@@ -150,7 +162,7 @@ class Question(db.Model):
     # comments = db.relationship('Comment', backref=db.backref('questions',order_by=id.desc()))
 
     # def __repr__(self):
-    #     return '<Question {}>'.format(self.title)
+    #     return f'<Question {self.title}>'
 
     def to_json(self):
         json_post = {
@@ -158,9 +170,16 @@ class Question(db.Model):
             'title': self.title,
             'create_time': self.create_time,
             'update_time': self.update_time,
-            'user': self.user_id
+            'user': url_for('api.get_user', id=self.user_id, _external=True)
         }
         return json_post
+
+    @staticmethod
+    def from_json(json_post):
+        content = json_post.get('content')
+        if content is None or content == '':
+            raise ValidationError('content cannot be empty.')
+        return Question(content=content)
 
 
 class Comment(db.Model):
@@ -175,5 +194,22 @@ class Comment(db.Model):
     # questions = db.relationship('Question', backref=db.backref('comments'))
     # users = db.relationship('User', backref=db.backref('comments'))
 
+    def to_json(self):
+        json_comment = {
+            'url': url_for('api.get_comment', id=self.id, _external=True),
+            'body': self.content,
+            'timestamp': self.time,
+            'author': url_for('api.get_user', id=self.user_id, _external=True),
+            'question': url_for('api.get_post', id=self.question_id, _external=True)
+        }
+        return json_comment
+
+    @staticmethod
+    def from_json(json_comment):
+        content = json_comment.get('content')
+        if content is None or content == '':
+            raise ValidationError('Content cannot be empty.')
+        return Comment(content=content)
+
     # def __repr__(self):
-    #     return '<Comment {}>'.format(self.content)
+    #     return f'<Comment {self.content}>'

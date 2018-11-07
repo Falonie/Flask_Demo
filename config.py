@@ -1,5 +1,7 @@
 import os
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
@@ -14,6 +16,7 @@ class Config(object):
     # MAIL_DEBUG : default app.debug
     MAIL_USERNAME = "541002901@qq.com"
     MAIL_PASSWORD = "ecerlujhbaahbdib"
+    # MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_DEFAULT_SENDER = "541002901@qq.com"
     ADMIN = "541002901@qq.com"
     FLASKY_POSTS_PER_PAGE = 7
@@ -30,7 +33,8 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:1234@localhost:3306/flask_demo_test"
+    # SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:1234@localhost:3306/flask_demo_test"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "data-test.db")
     WTF_CSRF_ENABLED = False
 
 

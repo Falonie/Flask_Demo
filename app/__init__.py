@@ -6,6 +6,7 @@ from flask_wtf import CSRFProtect
 from flask_restful import Resource, Api, reqparse, fields, marshal_with
 from flask_bootstrap import Bootstrap
 from flask_pagedown import PageDown
+from flask_moment import Moment
 from config import config
 # from .api_1_0 import api_bp
 # from .api_1_0.users import api_bp
@@ -13,6 +14,7 @@ from config import config
 db = SQLAlchemy()
 mail = Mail()
 pagedown = PageDown()
+moment = Moment()
 # api = Api()
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'
@@ -26,6 +28,7 @@ def create_app(config_name):
     mail.init_app(app)
     pagedown.init_app(app)
     CSRFProtect(app)
+    moment.init_app(app)
     # api.init_app(api_bp)
     login_manager.init_app(app)
 

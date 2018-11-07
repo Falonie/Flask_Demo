@@ -23,6 +23,10 @@ $(function () {
                     $('#message').html(message);
                     $('#message').show();
                     window.location = '/'
+                } else {
+                    var message = data["message"];
+                    $('#message').html(message);
+                    $('#message').show();
                 }
             }
         })

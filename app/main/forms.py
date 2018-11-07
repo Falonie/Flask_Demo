@@ -1,17 +1,18 @@
+from flask_wtf import FlaskForm
 from wtforms import Form, StringField, SubmitField, IntegerField, TextAreaField
 from wtforms.validators import Length, NumberRange, ValidationError, InputRequired
 from flask_pagedown.fields import PageDownField
 from ..models import User
 
 
-class PostForm(Form):
+class PostForm(FlaskForm):
     title = StringField('title', validators=[InputRequired()])
     # content = TextAreaField('content', validators=[InputRequired()])
     content = PageDownField('content', validators=[InputRequired()])
     submit = SubmitField('submit')
 
 
-class CommentForm(Form):
+class CommentForm(FlaskForm):
     comment_content = StringField('comment_content', validators=[InputRequired()])
     question_id = StringField('question_id', validators=[InputRequired()])
     submit = SubmitField('submit')
@@ -26,7 +27,7 @@ class EditProfileForm(Form):
             raise ValidationError('该用户名已存在')
 
 
-class EditArticleForm(Form):
+class EditArticleForm(FlaskForm):
     title = StringField('title', validators=[InputRequired()])
     # content = TextAreaField('content', validators=[InputRequired()])
     content = PageDownField('content', validators=[InputRequired()])

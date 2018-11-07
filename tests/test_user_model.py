@@ -84,11 +84,13 @@ class UserModelTestCase(unittest.TestCase):
         self.assertTrue(Comment.query.filter_by(id=1).first() is not None)
 
     def test_public_article_and_comment2(self):
-        response = self.client.post(url_for('main.question'), data={
+        # response = self.client.post(url_for('main.question'), data={
+        response = self.client.post('/question', data={
             'title': 'test_title',
             'content': 'content'
         })
-        self.assertTrue(response.status_code == 302)
+        # self.assertTrue(response.status_code == 302)
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(Question.query.filter(Question.title == 'test_title').first() is not None)
-        response = self.client.get(url_for('main.index'))
+        # response = self.client.get(url_for('main.index'))
         # self.assertTrue('test_title'.encode('utf8') in response.data)

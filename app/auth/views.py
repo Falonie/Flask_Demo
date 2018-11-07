@@ -1,10 +1,10 @@
 import string, random
-from flask import url_for, redirect, request, render_template, session, jsonify, views, g, current_app
+from flask import url_for, redirect, request, render_template, session, jsonify, views, g, current_app,flash
 from flask_login import login_user, logout_user, login_required, current_user
 from flask_mail import Mail, Message
 from . import auth
 from .. import db, mail
-from ..models import User, Permission
+from ..models import User, Permission, Question
 from .forms import RegistrationForm, RegistrationByEmailForm, LoginForm, ChangeEmailForm, SMSCaptcha, \
     ChangeTelephoneForm, ChangePasswordForm, PasswordResetRequestForm, PasswordResetEmailForm, PasswordResetForm
 from ..email import send_mail_thread, send_mail_thread2
@@ -24,6 +24,21 @@ def before_request():
         if not current_user.confirmed and request.endpoint[:5] != 'auth.':
             return redirect(url_for('auth.unconfirmed'))
     # print('*' * 20, 'permissions', current_user.can(Permission.WRITE_ARTICLES), '*' * 20)
+    # u = User.query.filter(User.id == 3).all()
+    u = User.query.get_or_404(3)
+    print(u)
+    print(f"User Count: {User.query.count()}")
+    # print(f'g.current_user: {g.current_user}')
+    # page = request.args.get('page', type=int, default=1)
+    # print(Question.query.filter(Question.user_id==u.id).order_by(Question.create_time.desc()).all())
+    # p = u.questions.order_by(Question.create_time.desc())
+    # p = Question.query.filter(Question.user_id == u.id).order_by(Question.create_time.desc()).all()
+    # page = request.args.get('page', type=int, default=1)
+    # p = Question.query.filter(Question.user_id == u.id).order_by(Question.create_time.desc()).paginate(page=page,per_page=2,error_out=False)
+    # print(p.items)
+    # p = Question.query.order_by(Question.create_time.desc()).paginate(page=page, per_page=5, error_out=False)
+    # p = Question.query.order_by(Question.create_time.desc()).all()
+    # print(p.items)
 
 
 @auth.route('/unconfirmed/')
@@ -39,7 +54,7 @@ class RegistrationView(views.MethodView):
         return render_template('register.html', return_to=return_to, message=message)
 
     def post(self):
-        form = RegistrationForm(request.form)
+        form = RegistrationForm()
         if form.validate():
             username = form.username.data
             telephone = form.telephone.data
@@ -51,7 +66,7 @@ class RegistrationView(views.MethodView):
             db.session.commit()
             return jsonify({"code": 200, "message": "注册成功"})
             # return redirect(url_for('.login'))
-        print('Error: {}'.format(form.errors))
+        print(f'Error: {form.errors}')
         message = form.errors.popitem()[1][0]
         return jsonify({"code": 401, "message": message})
         # return self.get(message)
@@ -63,11 +78,11 @@ auth.add_url_rule('/register/', view_func=RegistrationView.as_view('register'))
 class LoginView(views.MethodView):
     def get(self):
         return_to = request.referrer
-        print('*' * 30, 'login return_to {}'.format(return_to), '*' * 30)
+        print('*' * 30, f'login return_to {return_to}', '*' * 30)
         return render_template('login.html', return_to=return_to)
 
     def post(self):
-        form = LoginForm(request.form)
+        form = LoginForm()
         if form.validate():
             # telephone = form.telephone.data
             account_number = form.account.data
@@ -76,12 +91,13 @@ class LoginView(views.MethodView):
             #        User.query.filter(User.email == account_number, password == password).first()
             user = User.query.filter(User.telephone == account_number).first() or \
                    User.query.filter(User.email == account_number).first()
-            print('login user {}'.format(user))
+            print(f'login user {user}')
             if user and user.verify_password(password):
                 login_user(user, remember=True)
                 # session['user_id'] = user.id
                 # session.permanent = True
                 # return redirect(url_for('main.index'))
+                flash("登录成功")
                 return jsonify({"code": 200, "message": ""})
             return jsonify({"code": 401, "message": "手机号或密码错误"})
         print('Error: {}'.format(form.errors))
@@ -101,19 +117,23 @@ def logout():
 
 @auth.route('/register_by_email/', methods=['GET', 'POST'])
 def register_by_email():
-    form = RegistrationByEmailForm(request.form)
-    if form.validate():
-        username = form.username.data
-        password = form.password.data
-        email = form.email.data
-        user = User(username=username, password=password, email=email)
-        db.session.add(user)
-        db.session.commit()
-        token = user.generate_confirmation_token()
-        send_mail_thread2(user.email, 'comfirmation', 'email/confirm', user=user, token=token)
-        return render_template('after_sent_email.html')
-        # return redirect(url_for('.login'))
-        # return jsonify({"code": 200, "message": "邮件已发送"})
+    if request.method == "POST":
+        form = RegistrationByEmailForm()
+        if form.validate():
+            username = form.username.data
+            password = form.password.data
+            email = form.email.data
+            user = User(username=username, password=password, email=email)
+            db.session.add(user)
+            db.session.commit()
+            token = user.generate_confirmation_token()
+            send_mail_thread2(user.email, 'comfirmation', 'email/confirm', user=user, token=token)
+            # return render_template('after_sent_email.html')
+            # return redirect(url_for('.login'))
+            return jsonify({"code": 200, "message": "邮件已发送"})
+        print(f'Error: {form.errors}')
+        message = form.errors.popitem()[1][0]
+        return jsonify({"code": 401, "message": message})
     return render_template('registration_email.html')
 
 
@@ -146,7 +166,7 @@ def sms_captcha():
         #     zlcache.set(telephone, captcha)
         zlcache.set(telephone, captcha)
         redis_instance.set(telephone, captcha)
-        print('*' * 30, 'redis sms_captcha {}'.format(redis_instance.get(telephone).decode('utf-8')), '*' * 30)
+        print('*' * 30, f'redis sms_captcha {redis_instance.get(telephone).decode("utf-8")}', '*' * 30)
         #     return restful.success()
         # return restful.params_error(message='短信验证码发送失败')
         # zlcache.set(telephone, captcha)
@@ -212,7 +232,7 @@ def change_email():
     if request.method == 'POST':
         form = ChangeEmailForm(request.form)
         if form.validate():
-            print('captcha is: {}'.format(form.captcha.data))
+            print(f'captcha is: {form.captcha.data}')
             email = form.email.data
             # g.user.email = email
             current_user.email = email
